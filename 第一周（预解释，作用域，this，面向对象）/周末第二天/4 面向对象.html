@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <div></div>
+</body>
+</html>
+<script>
+    /*
+    *   单例模式  :  其实就是一个对象，用对象作为一个模块的划分。命名空间  nameSpace
+    *        ps : 单例模式中属性和属性之间的调用使用this就可以  （最常用）
+    * */
+
+    var news = {
+        num : 100,
+        fn : function (){
+            this.add(); // news.add()
+        },
+        add : function (){
+            this.num;
+        }
+    };
+
+    news.fn();
+
+    var caijing = {
+        fn : function (){
+
+        }
+    };
+    caijing.fn();
+
+    /*
+    *   构造函数(类)模式 :
+    *
+    *   类 : 其实就是一个函数 => 定义一个类和定义一个函数都用关键字function
+    *
+    *   实例 ： 就是具体到这个类的某一个 => 创建一个实例用关键字 new Tab()
+    *
+    *   instanceof 是判断一个实例是否属于一个类
+    *
+    *   函数角色 : 普通函数、构造函数(类)、Function这个函数内置类的实例
+    *
+    *   当作构造函数(new方式执行)那么会有默认返回实例的动作
+    *
+    *   每个实例都是一个对象数据类型
+    *
+    * */
+
+    //内置类 :  Number String Boolean Array数组 Object对象 RegExp Date Function
+
+    // typeof  instanceof constructor Object.prototype.toString.call()
+
+    function Tab(){// 定义了一个叫做Tab选项卡类
+        // alert() 弹出说明Tab在new的过程中是执行的
+        this.x = 100;
+        this.y = 200;
+
+    }
+
+    Tab(); // 普通函数
+    Tab instanceof Function; // Tab是Function的一个实例
+    var tab1 = new Tab(); // 当作构造函数运行
+    console.log(tab1); // 打印tab1不是undefined,说明当作类来执行有默认返回实例的动作
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</script>

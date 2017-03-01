@@ -79,6 +79,36 @@
     console.log(ary);
     // .... 如何把已经排好序的这个数组和页面中的li元素结合起来  dom映射
 
+    Array.prototype.slice;
+    var a = [1,2];
+    var b = [3,4];
+    a.slice(); // slice方法中的this就是数组a => 在slice方法中就是要克隆this
+    b.slice(); //
+    /*
+    *   try{
+    *       先尝试执行这里的代码,如果报错那么执行catch内的代码
+*       }catch(e){
+*           e是一个对象，e.message属性保存着报错的信息
+*       }
+    *
+    * */
+
+    function listToArray(list){
+        try{
+            // 把slice方法中的this修成成list类数组，因为slice中的this就是要克隆的那个数组。把this改成list后，就变成了克隆list并且返回。ie8-不兼容
+            return Array.prototype.slice.call(list,0);
+        }catch(e){
+            console.log(e.message);
+            var ary = [];
+            for(var i = 0; i < list.length; i++){
+                ary.push(list[i]);
+            }
+            return ary;
+        }/*finally {
+
+        }*/
+    }
+
 
 
 

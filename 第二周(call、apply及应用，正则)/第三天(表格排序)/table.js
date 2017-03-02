@@ -62,24 +62,41 @@ changeBg();
 // 给表头列绑定点击事件
 ;(function bindEvent(){
     for(var i = 0; i < tHeadThs.length; i++){
+        tHeadThs[i].index = i; // 给每一个表头都增加一个自定义属性，当点击事件发生的时刻，需要把这个自定义属性保存的索引值传给sort函数作为排序的依据
+        tHeadThs[i].sortFlag = -1; // 给每一个表头都增加一个自定义属性-1，用来作为排序切换
         if(tHeadThs[i].className == 'cursor'){ // 只给有cursor类样式的绑定
             tHeadThs[i].onclick = function (){
                 // 按照当前(this)点击的这一列去排序
-                sort();
+                sort.call(this/*,this.index*/);
                 changeBg();
             }
         }
     }
 })();
 
-function sort(){ // sort负责排序
+function sort(/*n*/){ // sort负责排序
+    // 每次点击执行sort方法的时候，把除了正在点击的这一列的其他列全部恢复成-1
+    for(var i = 0; i < tHeadThs.length; i++){
+        if(tHeadThs[i] != this){
+            tHeadThs[i].sortFlag = -1;
+        }
+    }
+
     var tBodyRowsAry = [].slice.call(tBodyRows);
+    this.sortFlag *= -1;
+    var that = this;
     tBodyRowsAry.sort(function (tr1,tr2){
-        return tr1.cells[2].innerHTML - tr2.cells[2].innerHTML;
+        var a = tr1.cells[/*n*/that.index].innerHTML;
+        var b = tr2.cells[/*n*/that.index].innerHTML;
+        if(isNaN(a) || isNaN(b)){
+            return (a.localeCompare(b))*that.sortFlag;
+        }
+        return  (a - b)*that.sortFlag;
     });
     for(var i = 0; i < tBodyRowsAry.length; i++){
         tBody.appendChild(tBodyRowsAry[i]);
     }
 }
+
 
 

@@ -18,7 +18,8 @@ var data = null;
 console.log(data);
 
 // 绑定数据
-;(function bindData(){
+bindData();
+function bindData(){
     if(data && data.length){
         for(var i = 0; i < /*data.length*/50; i++){
             var ran = Math.round(Math.random()*8);
@@ -47,19 +48,60 @@ console.log(data);
             ulsAry[0].appendChild(li);
         }
     }
-})();
+}
 
 // 图片延迟加载 => 淡入 =>  多个单张图片延迟加载
-;(function imgsDelayLoad(){
+window.onscroll = function (){
+    // 滚动论滚动需要重新循环每一张图片，重新判断是否进入到窗口内
+    imgsDelayLoad();
+    // 在距离到达底部还有1000px的时候然后再添加50个li
+    var winScrollTop = utils.win('scrollTop');
+    var pageHeight = document.body.scrollHeight; // 整个页面的高度
+    // 当滚出去的高度大于页面的高度-1000的时刻在添加50个图片
+    if(winScrollTop > pageHeight - 1000){
+        bindData();
+    }
+    // 当滚动出去的高度 > 一个屏幕高度的时候让top按钮出现
+}
+imgsDelayLoad();
+function imgsDelayLoad(){
     for(var i = 0; i < imgs.length; i++){
         var curImg = imgs[i]; // 立刻要做判断这个curImg是否完全进入到窗口内
+        //if(curImg.isLoaded){ continue; }
         var _a = utils.win('clientHeight') + utils.win('scrollTop');
         var _b = curImg.offsetHeight + utils.offset(curImg).top;
         if(_a > _b){ // 条件成立说明这个图片已经完全进入到窗口内
             // 我需要把real的值赋值给src，但是在赋值之前检查资源有效性
-            
+            checkImg(curImg); // 符合进入窗口条件的图片做有效性验证
         }
     }
-})();
+}
+
+function checkImg(img){ // 验证资源有效性
+    if(img.isLoaded){
+        return;
+    }
+    // 形参img就是等待验证的图片 => 页面内所有图片中imgs中的一个imgs[i]
+    var tempImg = document.createElement('img'); // new Image()
+    tempImg.src = img.getAttribute('real'); // 加载真是图片资源
+    tempImg.onload = function (){ // 临时图片加载真实图片资源成功
+        img.src = this.src; // 把real的值赋值给src属性
+        fadeIn(img); // 真实图片淡入
+    }
+    img.isLoaded = true; // 只要加载过那么这个图片无论成功还是失败都会增加一个isLoaded属性
+}
+
+function fadeIn(ele){ // opacity =>  0-1
+    ele.timer && window.clearInterval(ele.timer);
+    ele.timer = window.setInterval(function (){
+        var opacity = utils.getCss(ele,'opacity');
+        if(opacity >= 1){
+            window.clearInterval(ele.timer);
+            return;
+        }
+        opacity = opacity + 0.01;
+        utils.setCss(ele,'opacity',opacity);
+    },10);
+}
 
 

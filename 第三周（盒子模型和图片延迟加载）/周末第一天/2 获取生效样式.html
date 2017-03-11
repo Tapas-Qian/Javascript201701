@@ -120,6 +120,22 @@
         }
     }
 
+    document.documentElement.scrollTop || document.body.scrollTop;
+    document.documentElement.clientWidth || document.body.clientWidth;
+
+    function win(attr,val){
+        if(typeof val == 'undefined'){
+            return document.documentElement[attr] || document.body[attr];
+        }
+        // scrollTop和scrollLeft生效
+        document.documentElement[attr] = val;
+        document.body[attr] = val;
+    }
+    //
+    win('clientWidth'); // 获取
+    win('scrollTop');
+    win('scrollTop',500); // 设置
+
 
 
 </script>

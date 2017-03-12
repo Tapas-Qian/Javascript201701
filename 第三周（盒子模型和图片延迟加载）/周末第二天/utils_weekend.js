@@ -167,17 +167,18 @@ var utils = (function (){
 
 
 
+
     return {
         // 如果想用这个函数
         listToArray : listToArray,
         getRandom : getRandom,
         win : win,
         css : css,
-        offset : offset,
         getElesByClass : getElesByClass,
         hasClass : hasClass,
         addClass : addClass,
-        removeClass : removeClass
+        removeClass : removeClass,
+        offset : offset
     };
 })();
 

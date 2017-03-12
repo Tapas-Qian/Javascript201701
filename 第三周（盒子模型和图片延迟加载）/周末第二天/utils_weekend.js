@@ -1,5 +1,5 @@
 var utils = (function (){
-    var isStanderBrowser = !!window.getComputedStyle; //
+    var isStanderBrowser = !!document.getElementsByClassName; //
 
     function listToArray(likeAry){
         try{
@@ -165,7 +165,80 @@ var utils = (function (){
         return { left : l, top : t };
     }
 
+    function prev(ele){ // 获取上一个元素哥哥节点
+        if(isStanderBrowser){
+            return ele.previousElementSibling;
+        }
+        var pre = ele.previousSibling; // 先获取上一个哥哥节点
+        while (pre && pre.nodeType != 1 ){
+            pre = pre.previousSibling;
+        }
+        return pre;
+    }
 
+    function next(ele){
+        if(isStanderBrowser){
+            return ele.nextElementSibling;
+        }
+        var nex = ele.nextSibling;
+        while (nex && nex.nodeType != 1){
+            nex = nex.nextSibling;
+        }
+        return nex;
+    }
+
+    function prevAll(ele){ //所有的元素哥哥
+        var ary = [];
+        var pre = prev(ele); // 先获取一个元素哥哥
+        while (pre){
+            ary.unshift(pre);
+            pre = prev(pre); // pre条件更新
+        }
+        return ary;
+    }
+
+    function nextAll(ele){
+        var ary = [];
+        var nex = next(ele);
+        while(nex){
+            ary.push(nex);
+            nex = next(nex);
+        }
+        return ary;
+    }
+
+    function siblings(ele){ // 所有兄弟们
+        return prevAll(ele).concat(nextAll(ele));
+    }
+
+    function index(ele){
+        return prevAll(ele).length;
+    }
+
+    function children(ele,tagName){ // 所有元素子节点
+        var ary = [];
+        if(isStanderBrowser){
+            ary =  listToArray(ele.children);
+        }else{
+// 从childNodes里挑出来nodeType为1
+            var childs = ele.childNodes;
+            for(var i = 0; i < childs.length; i++){
+                if(childs[i].nodeType == 1){
+                    ary.push(childs[i]);
+                }
+            }
+        }
+
+        if(typeof tagName == 'string'){ // 'p'
+            for(var i = 0; i < ary.length; i++){
+                if(ary[i].nodeName !== tagName.toUpperCase()){
+                    ary.splice(i,1);
+                    i--;
+                }
+            }
+        }
+        return ary;
+    }
 
 
     return {
@@ -178,7 +251,14 @@ var utils = (function (){
         hasClass : hasClass,
         addClass : addClass,
         removeClass : removeClass,
-        offset : offset
+        offset : offset,
+        prev : prev,
+        next : next,
+        prevAll : prevAll,
+        nextAll : nextAll,
+        siblings : siblings,
+        index : index,
+        children : children
     };
 })();
 

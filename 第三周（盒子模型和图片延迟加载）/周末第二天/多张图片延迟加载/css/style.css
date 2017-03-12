@@ -30,6 +30,7 @@ ul, li{
     height: 100%;
     border: none;
     vertical-align: top;
+    opacity: 0;
 }
 .newsList li div:nth-child(2){
     height: 60px;

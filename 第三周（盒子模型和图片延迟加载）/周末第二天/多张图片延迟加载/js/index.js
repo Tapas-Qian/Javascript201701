@@ -50,6 +50,8 @@ function imgsDelayLoad(){ // dz
             tempImg.src = imgs[i].getAttribute('real');// 加载对应真实图片资源
             tempImg.onload = function (){
                 imgs[this.index].src = this.src; // this.index
+                // 让图片的透明度从0动画到1
+                fadeIn(imgs[this.index]);
             }
             imgs[i].isLoaded = true;
         }
@@ -57,6 +59,19 @@ function imgsDelayLoad(){ // dz
 }
 imgsDelayLoad(); // 默认已经进入到窗口内的
 window.onscroll = imgsDelayLoad; // 滚动条滚动要继续执行这个函数
+
+function fadeIn(ele){
+    ele.timer && window.clearInterval(ele.timer);
+    ele.timer = window.setInterval(function (){
+        var opa = utils.css(ele,'opacity'); // 获取当前透明度
+        if(opa >= 1){
+            window.clearInterval(ele.timer);
+            return;
+        }
+        opa += 0.01;
+        utils.css(ele,'opacity',opa);
+    },10);
+}
 
 
 

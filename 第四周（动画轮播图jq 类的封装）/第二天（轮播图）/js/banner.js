@@ -83,7 +83,73 @@ function autoMove() {
         },
         duration: 500
     });
+    focusAlign();
 }
+// 负责焦点和轮播图对应
+function focusAlign(){
+    // index;  0 1 2 3 4
+    // 如果index（当前播放到第几张）的值是最后一张，那么焦点图应该选中第一个
+    var tempIndex = index == /*4*/data.length ? 0 : index;
+    for(var i = 0; i < lis.length; i++){
+        // 每次轮播一张图之后，都要遍历每个li，和index的值对应的li添加cur否则移除
+        lis[i].className = i == tempIndex ? 'cur' : '';
+    }
+}
+
+// 绑定鼠标悬停事件
+
+wrap.onmouseover = function (){ // 停止播放 显示左右按钮
+    window.clearInterval(timer);
+    left.style.display = right.style.display = 'block';
+}
+
+wrap.onmouseout = function (){
+    timer = window.setInterval(autoMove,2000);
+    left.style.display = right.style.display = 'none';
+}
+
+// 给左右按钮绑定点击事件
+
+left.onclick = function (){
+    var winWidth = utils.win('clientWidth');
+    index--; // 即将要运动到的目的地
+    if(index == -1){
+        utils.css(inner,{ left : -/*4*/data.length* winWidth});
+        index = /*3*/data.length-1;
+    }
+
+    animate({
+        ele : inner,
+        target : {
+            left : -index*winWidth
+        },
+        duration : 500
+    });
+    focusAlign();
+}
+right.onclick = autoMove;
+
+// 给每一个焦点图绑定点击事件
+
+;(function (){
+    for(var i = 0; i < lis.length; i++){
+        lis[i].index = i; // 保存每个焦点的索引
+        lis[i].onclick = function (){
+            var winWidth = utils.win('clientWidth');
+            index = this.index;
+            // 先修改点击时刻index的值，然后再动画
+            animate({
+                ele : inner,
+                target : {
+                    left : -this.index*winWidth
+                },
+                duration : 500
+            });
+            focusAlign();
+        }
+    }
+})();
+
 
 
 

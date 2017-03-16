@@ -1,3 +1,13 @@
+/**
+ * 轮播图封装
+ * @param container 轮播图最外层的元素
+ * @param url 接口  后台提供
+ * @param interval  图片播放的频率
+ */
+function banner(container,url,interval){
+
+}
+
 var wrap = utils.getElementsByClass('wrap')[0];
 var inner = utils.getElementsByClass('inner', wrap)[0];
 var focusList = utils.getElementsByClass('focusList', wrap)[0];
@@ -124,3 +134,5 @@ right.onclick = autoMove;
         }
     }
 })();
+
+//

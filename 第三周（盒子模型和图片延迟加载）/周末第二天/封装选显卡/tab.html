@@ -48,11 +48,11 @@
 <body>
     <div class="tab">
         <ul>
-            <li>1</li>
+            <li class="active">1</li>
             <li>2</li>
             <li>3</li>
         </ul>
-        <div>1</div>
+        <div class="active">1</div>
         <div>2</div>
         <div>3</div>
     </div>
@@ -80,13 +80,19 @@
     </div>
 </body>
 </html>
-<script src="../utils_weekend.js"></script>
-<script src="tab.js"></script>
+<!--<script src="../utils_weekend.js"></script>-->
+<!--<script src="tab.js"></script>-->
+<script src="jquery-1.11.3.js"></script>
 <script>
-    var tabs = utils.getElesByClass('tab'); // [tab,tab,tab]
-    for(var i = 0; i < tabs.length; i++){
-        tabChange(tabs[i],i); // 0 1 2
-    }
+//    var tabs = utils.getElesByClass('tab'); // [tab,tab,tab]
+//    for(var i = 0; i < tabs.length; i++){
+//        tabChange(tabs[i],i); // 0 1 2
+//    }
+
+    $('.tab').eq(0).find('li').on('click',function (){
+        var index = $(this).index(); // 索引值
+        $(this).addClass('active').siblings().removeClass('active').end().parent().nextAll().eq(index).addClass('active').siblings().removeClass('active');
+    });
 
 
 

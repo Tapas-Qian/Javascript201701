@@ -49,7 +49,7 @@
     var str = '1324134'; //=> "伍叁壹贰肆"
     var str1 = '零壹贰叁肆伍陆柒捌玖';
     str = str.replace(/\d/g,function (){
-        return str1.charAt(arguments[0]); // 5 => '伍'  4 => '肆'
+        return str1[arguments[0]]; // 5 => '伍'  4 => '肆'
     });
     console.log(str);
 

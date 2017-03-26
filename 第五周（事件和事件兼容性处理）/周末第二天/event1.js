@@ -58,7 +58,7 @@
 
     function bind(fn,context){ // 处理this
         return function (e){
-            run.call(context,e);
+            fn.call(context,e);
         }
     }
 

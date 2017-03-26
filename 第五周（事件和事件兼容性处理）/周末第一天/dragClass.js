@@ -1,11 +1,16 @@
 //new Drag(div1);
 //new Drag(div2); => 就能拖拽 => new Drag过程中MOUSEDOWN事件已经绑定
 // 永远要保证原型上方法中的this是实例
-function Drag(ele){
+
+//  用公有方法去操作私有属性
+
+function Drag(ele,range){
+    // range : {left : 300, top : 300}
+
     this.ele = ele;
     this.l = null; // 当鼠标mousedown的那一刻才会赋值
     this.t = null;
-
+    this.range = range; // 把范围这个参数添加到私有属性上
     var that = this;
 
     this.DOWN = function (e){
@@ -44,7 +49,13 @@ Drag.prototype.move = function (e){// mousemove事件绑定
     e = e || window.event;
     var l = e.clientX - this.l;
     var t = e.clientY - this.t;
-    // 范围 => 如果存在就用自己的，默认值
+    // 范围 => 如果存在就用自己的，默认
+    var minL = 0, minT = 0;
+    var maxL = this.range ? this.range.left : (document.documentElement.clientWidth || document.body.clientWidth) - this.ele.offsetWidth;
+    var maxT = this.range ? this.range.top : (document.documentElement.clientHeight || document.body.clientHeight) - this.ele.offsetHeight;
+    l = l < minL ? minL : l > maxL ? maxL : l;
+    t = t < minT ? minT : t > maxT ? maxT : t;
+
     this.ele./*div1*/style.left = l + 'px';
     this.ele.style.top = t + 'px';
     e.preventDefault ? e.preventDefault() : e.returnValue = false;
